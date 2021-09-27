@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from .models import User
 
+from django.contrib import messages
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -24,6 +25,7 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
+            messages.error(request, 'Invalid username and/or password.', extra_tags='danger')
             return render(request, "auctions/login.html", {
                 "message": "Invalid username and/or password."
             })
