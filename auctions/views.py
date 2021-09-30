@@ -7,6 +7,7 @@ from django.urls import reverse
 from .models import User
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, "auctions/index.html")
@@ -63,3 +64,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+
+@login_required
+def listing(request):
+    pass
