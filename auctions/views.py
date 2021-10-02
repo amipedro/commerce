@@ -90,9 +90,11 @@ def listing(request):
                 description = listing['description']
                 category = listing['category']
                 zip_code = listing['zip_code']
+                # owner_id = request.user.id
 
                 # Assign preorganized info to a variable
-                new_listing = Listing(name=name, starting_price=starting_price, condition=condition, description=description, category=category, zip_code=zip_code)
+                new_listing = Listing(name=name, starting_price=starting_price, condition=condition, description=description, category=category, 
+                                        zip_code=zip_code)
 
                 # Save info to db
                 new_listing.save()
@@ -104,6 +106,9 @@ def listing(request):
 
 
     else:
+        user = request.user.id
+        print(user)
+
         return render(request, "auctions/listing.html", {
             "listing_form": ListingForm(),
             "images_form": ImagesForm()

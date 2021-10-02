@@ -2,12 +2,16 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from django.utils.timezone import now
+from django.conf import settings
+
 
 from django.forms import ModelForm
 
+
 # User Model
 class User(AbstractUser):
-    pass
+    id = models.AutoField(primary_key=True)
+
 
 # Listing model with all required database fields
 class Listing(models.Model):
@@ -60,17 +64,18 @@ class Listing(models.Model):
         default=HG
     )
     zip_code = models.IntegerField(default="00000")
-    creator_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="creatorUserId")
+    owner_id = models.ForeignKey(User, on_delete=models.CASCADE)
     creation_date = models.DateTimeField(default=now, editable=False)
     is_closed = models.BooleanField(default=False)
-    winner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="winner", null=True)
+    winner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="winner", null=True, blank=True)
 
     def __str__(self):
         return f"{self.name}"
 
 # Bid model
 class Bid(models.Model):
-    bidding_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="product")
+    bidding_id = models.AutoField(primary_key=True)
+    bidding_product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="product")
     highest_bidder_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="_Id")
     highest_bid = models.DecimalField(max_digits=12, decimal_places=2, default="0")
 
@@ -100,7 +105,7 @@ class Images(models.Model):
 class ListingForm(ModelForm):
     class Meta:
         model = Listing
-        fields = ['name', 'starting_price', 'condition', 'description', 'category', 'zip_code', ]
+        fields = ['name', 'starting_price', 'condition', 'description', 'category', 'zip_code']
 
 # Form for image
 class ImagesForm(ModelForm):
