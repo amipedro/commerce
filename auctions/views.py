@@ -68,7 +68,7 @@ def register(request):
         return render(request, "auctions/register.html")
 
 @login_required
-def listing(request):
+def list(request):
     if request.method == "POST":
         
         # Take in data the user submitted and save as forms
@@ -102,23 +102,19 @@ def listing(request):
                     new_listing.owner = request.user
 
                     new_listing.save()
-                    print(listing)
-                    return HttpResponseRedirect(reverse('listing'))
+                    return HttpResponseRedirect(reverse('list'))
             
                 else:
-
-
+                    messages.error(request, 'Image url in wrong format. Try adding a link ending in .jpeg, .jpg, .png or .bmp', extra_tags='danger')
                     print("Image url in wrong format")
-                    return HttpResponseRedirect(reverse('listing'))
 
+                    return render(request, "auctions/list.html", {
+                        "listing_form": ListingForm(),
+                        "message": "Image url in wrong format. Try adding a link ending in .jpeg, .jpg, .png or .bmp"
+                    })
 
     else:
-        user = request.user
-        print(user)
-        id = request.user.id
-        print(id)
-        print(User.objects.get(id=id))
 
-        return render(request, "auctions/listing.html", {
+        return render(request, "auctions/list.html", {
             "listing_form": ListingForm()
         })
