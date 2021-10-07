@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<p id='paragraph'>Testing the layout</p>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} m-2" id="msg" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if listing_form %}
+        <div class="listing_form">
+            <form method="post" action="/list">
+                {% csrf_token %}
+                {{ listing_form }}
+    
+            <input type="submit" value="Create Listing!">
+        </div>
+        </form>
+    {% endif %}
+
+{% endblock %}

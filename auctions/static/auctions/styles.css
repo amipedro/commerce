@@ -1,3 +1,27 @@
 body {
     padding: 10px;
 }
+
+
+.listing_form input, label, select {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.listing_form input {
+    border-radius: 10px;
+}
+
+#id_name, #id_starting_price, #id_condition, #id_description, #id_image_url, #id_category, #id_zip_code {
+    margin-bottom: 15px;
+}
+
+/**
+
+label {
+    display:block;
+    border: 5px;
+}
+
+**/
