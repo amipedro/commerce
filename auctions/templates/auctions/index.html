@@ -3,5 +3,20 @@
 {% block body %}
     <h2>Active Listings</h2>
 
-    TODO
+    {% if listings %}
+        <div class="listings">
+        {% for listing in listings %}
+            <div class="listing">
+            <h6 class="listing-title">{{ listing.title }}</h6>
+            <br>
+            <img src="{{ listing.image_url}}" alt={{ listing.title}} style="width: 180px ; height: auto">
+            <br>
+            $ {{ listing.current_price }}
+            <br>
+            <br>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+
 {% endblock %}

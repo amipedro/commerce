@@ -17,11 +17,19 @@ body {
     margin-bottom: 15px;
 }
 
-/**
-
-label {
-    display:block;
-    border: 5px;
+.listings {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-items: center;
+    justify-content: space-evenly;
+    align-items: space-evenly;
 }
 
-**/
+.listing {
+    justify-self: center;
+    align-self: center;
+}
+
+.listing-title {
+    text-align: center;
+}

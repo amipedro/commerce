@@ -12,7 +12,12 @@ from django.contrib.auth.decorators import login_required
 from .models import ListingForm
 
 def index(request):
-    return render(request, "auctions/index.html")
+
+    listings = Listing.objects.filter(is_closed=0)
+
+    return render(request, "auctions/index.html", {
+        'listings': listings
+        })
 
 
 def login_view(request):
@@ -86,7 +91,7 @@ def list(request):
                 if image_url.endswith('.jpeg') or image_url.endswith('.jpg') or image_url.endswith('.png') or image_url.endswith('.bmp'):
 
                     # Prepare information to be saved on db
-                    name = listing['name']
+                    title = listing['title']
                     starting_price = listing['starting_price']
                     condition = listing['condition']
                     description = listing['description']
@@ -95,8 +100,8 @@ def list(request):
                     # owner_id = request.user.id
 
                     # Assign preorganized info to a variable
-                    new_listing = Listing(name=name, starting_price=starting_price, condition=condition, description=description, 
-                                            image_url=image_url, category=category, zip_code=zip_code)
+                    new_listing = Listing(title=title, starting_price=starting_price, condition=condition, description=description, 
+                                            image_url=image_url, category=category, current_price=starting_price, zip_code=zip_code)
             
                     # Save info to db with owner information
                     new_listing.owner = request.user
