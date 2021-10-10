@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, Comment, Bid
+from .models import User, Listing, Comment, Bid, Watchlist
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -123,3 +123,63 @@ def list(request):
         return render(request, "auctions/list.html", {
             "listing_form": ListingForm()
         })
+
+def listing(request, id):
+
+    # Check if user already has added item to watchlist
+    listing = Listing.objects.filter(listing_id=id)
+    is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
+
+    # Prepare information to generate "Add to watchlist / Remove from watchlist"
+    if is_watched:
+        is_watched = True
+    else:
+        is_watched = False
+
+
+    return render(request, "auctions/listing.html",{
+        'listing': listing,
+        'id': id,
+        'is_watched': is_watched
+    })
+
+
+@login_required
+def watch(request,id):
+    # Check if item is listed
+    is_listed = Listing.objects.filter(pk=id)
+
+    if is_listed:
+        
+        # Check if item is watched already
+        is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
+
+        if not is_watched:
+            # Query data
+            user = User.objects.get(pk=request.user.id)
+            listing = Listing.objects.get(pk=id)
+
+            # Prepare data to be saved to database and save it
+            new_watchlist_item = Watchlist(watcher=user, listing=listing)
+            new_watchlist_item.save()
+    else:
+
+        return HttpResponseRedirect(reverse('index'))
+
+    return HttpResponseRedirect(f"/listing/{id}")
+
+
+@login_required
+def unwatch(request,id):
+
+    # Check if item is listed
+    is_listed = Listing.objects.filter(pk=id)
+
+    if is_listed:
+        is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
+        if is_watched:
+            is_watched.delete()
+    else:
+        return HttpResponseRedirect(reverse('index'))
+
+    return HttpResponseRedirect(f"/listing/{id}")

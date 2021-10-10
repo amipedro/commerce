@@ -19,7 +19,7 @@ body {
 
 .listings {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     justify-items: center;
     justify-content: space-evenly;
     align-items: space-evenly;
@@ -32,4 +32,66 @@ body {
 
 .listing-title {
     text-align: center;
+}
+
+.img-container {
+    width: 200px;
+    height: auto;
+    
+}
+
+.img-cover {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+
+    border: 1px solid;
+    border-color: rgb(207, 207, 207);
+    padding: 2px;
+    
+}
+
+/**
+.listing-img-container {
+     
+}
+**/
+
+.listing_img {
+    border: 1px solid;
+    margin: 1px;
+    padding: 2px;
+    width: 300px;
+    height: auto;
+}
+
+#condition, #current-bid {
+    font-size: 14px;
+}
+
+#condition span {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+#price {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#list-price, #location, #category {
+    font-size: 13px;
+}
+
+
+/** Watchlist styling **/
+
+.button {
+    margin: 3px;
+}
+
+#atl {
+    border: 1px solid;
+    padding: 4px;
+    border-radius: 8px;
 }

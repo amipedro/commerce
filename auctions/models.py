@@ -95,6 +95,13 @@ class Comment(models.Model):
     def __str__(self):
         return f"{self.comment} by {self.commenter_id} on {self.listing_id}"
 
+# Watchtlist model
+
+class Watchlist(models.Model):
+    watched_id = models.BigAutoField(primary_key=True)
+    watcher = models.ForeignKey(User, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+
 '''
 # Image model. A single image will be saved at time.
 class Images(models.Model):

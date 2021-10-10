@@ -7,9 +7,13 @@
         <div class="listings">
         {% for listing in listings %}
             <div class="listing">
-            <h6 class="listing-title">{{ listing.title }}</h6>
+            <a href="/listing/{{listing.listing_id}}"><h6 class="listing-title">{{ listing.title }}</h6></a>
+            <br> 
+            <div class="img-container">
+            <img class="img-cover" src="{{ listing.image_url}}" alt={{ listing.title}}>
+            </div>
             <br>
-            <img src="{{ listing.image_url}}" alt={{ listing.title}} style="width: 180px ; height: auto">
+            <h6>{{ listing.condition }}</h6>
             <br>
             $ {{ listing.current_price }}
             <br>
