@@ -125,7 +125,7 @@ def list(request):
         })
 
 def listing(request, id):
-
+    
     # Check if user already has added item to watchlist
     listing = Listing.objects.filter(listing_id=id)
     is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
@@ -181,5 +181,53 @@ def unwatch(request,id):
             is_watched.delete()
     else:
         return HttpResponseRedirect(reverse('index'))
+
+    return HttpResponseRedirect(f"/listing/{id}")
+
+
+@login_required
+def bid(request, id):
+
+    if request.method == "POST":
+        bid = request.POST['bid']
+
+        # Check if bid value is numeric
+        is_number = bid.isnumeric()
+
+        # Redirect to listing page if bid value is not numeric
+        if is_number == False:
+            return HttpResponseRedirect(f"/listing/{id}")
+
+        else:
+            # Get current price to be used as highest bid parameter
+            current_price = Listing.objects.filter(pk=id).values()
+            current_price = current_price[0]['current_price']
+            print(current_price)
+
+            # Check if it's possible to bid on listing
+            if float(bid) >= (float(current_price) + 1):
+                
+                # Get user and listing values
+                user = User.objects.get(pk=request.user.id)
+                listing = Listing.objects.get(pk=id)
+
+                # Create new bid and save it
+                new_bid = Bid(bid=bid, bidder=user, bidding_product=listing)
+                new_bid.save()
+                
+                # Update bid on listing
+                update_price = Listing.objects.get(listing_id=id)
+                update_price.current_price = bid
+                update_price.save()
+
+                # Alert user with successful message
+                messages.success(request, 'Successfully bid.')
+                return HttpResponseRedirect(f"/listing/{id}")
+            
+            # Alert user with failed message
+            else:
+
+                messages.error(request, f'Bid value should be greater than ${current_price}.', extra_tags='danger')
+                return HttpResponseRedirect(f"/listing/{id}")
 
     return HttpResponseRedirect(f"/listing/{id}")

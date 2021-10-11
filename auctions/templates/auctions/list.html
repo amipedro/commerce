@@ -14,7 +14,7 @@
 
     {% if listing_form %}
         <div class="listing_form">
-            <form method="post" action="/list">
+            <form action="/list" method="post">
                 {% csrf_token %}
                 {{ listing_form }}
     

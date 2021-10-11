@@ -95,3 +95,29 @@ body {
     padding: 4px;
     border-radius: 8px;
 }
+
+/** Place bid styling **/
+
+.bidForm {
+    margin-bottom: 10px;
+}
+
+#placeBidButton {
+    border: 1px solid;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: darkblue;
+    color: white;
+}
+
+#placeBidButton:hover {
+    background-color: rgb(60, 60, 158);
+}
+
+.enterxRow {
+    margin-top: -10px;
+}
+
+#enterx {
+    font-size:12px;
+}

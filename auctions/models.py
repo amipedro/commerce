@@ -77,13 +77,14 @@ class Listing(models.Model):
 
 # Bid model
 class Bid(models.Model):
-    bidding_id = models.AutoField(primary_key=True)
+    bidding_id = models.BigAutoField(primary_key=True)
     bidding_product = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="product")
-    highest_bidder_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="_Id")
-    highest_bid = models.DecimalField(max_digits=12, decimal_places=2, default="0")
+    bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="_Id")
+    bid = models.DecimalField(max_digits=12, decimal_places=2, default="0")
+    bid_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.bidding_id}, {self.highest_bidder_id}, {self.highest_bid}"
+        return f"{self.bidding_id}, {self.bidder}, $ {self.bid} || {self.bidding_product} "
 
 # Comment model
 class Comment(models.Model):
