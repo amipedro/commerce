@@ -130,6 +130,14 @@ def listing(request, id):
     listing = Listing.objects.filter(listing_id=id)
     is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
 
+    # Prepare close option to render
+    owner = listing[0].owner
+    user = request.user
+    if owner == user:
+        can_close = True
+    else:
+        can_close = False
+
     # Prepare information to generate "Add to watchlist / Remove from watchlist"
     if is_watched:
         is_watched = True
@@ -140,7 +148,8 @@ def listing(request, id):
     return render(request, "auctions/listing.html",{
         'listing': listing,
         'id': id,
-        'is_watched': is_watched
+        'is_watched': is_watched,
+        'can_close': can_close
     })
 
 
@@ -230,4 +239,24 @@ def bid(request, id):
                 messages.error(request, f'Bid value should be greater than ${current_price}.', extra_tags='danger')
                 return HttpResponseRedirect(f"/listing/{id}")
 
+    return HttpResponseRedirect(f"/listing/{id}")
+
+@login_required
+def close(request, id):
+
+    #winner = Bid.objects.get(id=id)
+
+    #print(winner)
+
+    # Get listing info to close auction
+    close_auction = Listing.objects.get(listing_id=id)
+    close_auction.is_closed = True
+    status = close_auction.is_closed
+
+
+    #close_auction.save()
+
+    #close_auction = close_auction.winner
+
+    messages.warning(request, 'Auction closed')
     return HttpResponseRedirect(f"/listing/{id}")

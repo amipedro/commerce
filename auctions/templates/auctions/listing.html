@@ -33,12 +33,13 @@
                         {% csrf_token %}
                         <input id="bidValue" name="bid" type="number" placeholder="Bid Amount" autocomplete="off">
 
-
                         <input id="placeBidButton" type="submit" value="Place bid">
                     </form>
+
                     <div class="enterxRow">
-                        <span id="enterx">Enter $ <strong>XX</strong> or more.</span>
+                        <span id="enterx">Enter $ {{ item.current_price|add:1 }} or more.</span>
                     </div>
+
                 </div>
 
             {% endif %}
@@ -54,7 +55,7 @@
                 {% else %}
 
                 <div class="button">
-                    <a id="atl" href="/unwatch/{{id}}">&#128148; Remove from Watchlist</a>
+                    <a id="atl" href="/unwatch/{{id}}">&#10060; Remove from Watchlist</a>
                 </div>
 
                 {% endif %}
@@ -73,6 +74,14 @@
 
             Listed by: {{ item.owner}}
         {% endfor %}
+
+        {% if can_close %}
+            <div class="button">
+                <a id="closeAuctionButton" href="/listing/{{id}}/close"> 👨‍⚖️ Close Auction </a>
+            </div>
+            <br>
+        {% endif %}
+
     {% endif %}
 
 {% endblock %}

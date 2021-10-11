@@ -121,3 +121,14 @@ body {
 #enterx {
     font-size:12px;
 }
+
+
+/** Close auction styling **/
+
+#closeAuctionButton {
+    border: 1px solid;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: brown;
+    color: white;
+}
