@@ -1,0 +1,78 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} m-2" id="msg" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if listing %}
+        {% for item in listing %}
+        <h4>{{ item.title }}</h4>
+            <br>
+            <div class="listing-img-container">
+                <img src="{{ item.image_url}}" class="listing_img"><br>
+            </div>
+
+            <span id="condition"><p>Condition: <span>{{ item.condition}}</span> </p></span>
+
+
+            <span id="current-bid">Current bid:</span>
+            <span id="price">$ {{ item.current_price}}</span>
+
+            <p id="list-price">List Price ${{ item.starting_price }}</p>
+            
+            {% if user.is_authenticated %}
+
+                <div class="bidForm">
+                    <form id="bidForm" method="post" action="/bid/{{id}}">
+                        {% csrf_token %}
+                        <input id="bidValue" name="bid" type="number" placeholder="Bid Amount" autocomplete="off">
+
+
+                        <input id="placeBidButton" type="submit" value="Place bid">
+                    </form>
+                    <div class="enterxRow">
+                        <span id="enterx">Enter $ <strong>XX</strong> or more.</span>
+                    </div>
+                </div>
+
+            {% endif %}
+
+            {% if user.is_authenticated %}
+
+                {% if not is_watched %}
+
+                <div class="button">
+                    <a id="atl" href="/watch/{{id}}">&#10084; Add to Watchlist</a>
+                </div>
+
+                {% else %}
+
+                <div class="button">
+                    <a id="atl" href="/unwatch/{{id}}">&#128148; Remove from Watchlist</a>
+                </div>
+
+                {% endif %}
+
+            {% endif %}
+
+            <p id="location">Zip code location: {{ item.zip_code }} </p>
+
+            <p id="category">Category: {{ item.category }}</p>
+
+            <br>
+            <strong>Item description:</strong>
+            <br>
+            {{ item.description }}
+            <br>
+
+            Listed by: {{ item.owner}}
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
