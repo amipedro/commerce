@@ -20,13 +20,23 @@
 
             <span id="condition"><p>Condition: <span>{{ item.condition}}</span> </p></span>
 
+            {% if not is_closed%}
 
-            <span id="current-bid">Current bid:</span>
+                {% if item.starting_price == item.current_price %}
+                    <span id="current-bid">Current price:</span>
+                {% else %}
+                    <span id="current-bid">Current bid:</span>
+                {% endif %}
+
+            {% else %}
+                <span id="current-bid">Sold for:</span>
+            {% endif %}
+
             <span id="price">$ {{ item.current_price}}</span>
 
             <p id="list-price">List Price ${{ item.starting_price }}</p>
             
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not is_closed and not can_close %}
 
                 <div class="bidForm">
                     <form id="bidForm" method="post" action="/bid/{{id}}">
@@ -66,20 +76,54 @@
 
             <p id="category">Category: {{ item.category }}</p>
 
+            <span id="itemDescription">Item description:</span>
             <br>
-            <strong>Item description:</strong>
+            <span id="descriptionText">{{ item.description }}</span>
             <br>
-            {{ item.description }}
-            <br>
-
-            Listed by: {{ item.owner}}
+            <span id="listingOwner">Listing owner: {{ item.owner}}</span>
+            
         {% endfor %}
 
         {% if can_close %}
-            <div class="button">
-                <a id="closeAuctionButton" href="/listing/{{id}}/close"> 👨‍⚖️ Close Auction </a>
-            </div>
-            <br>
+                {% if not is_closed %}
+                <div class="button">
+                    <a id="closeAuctionButton" href="/listing/{{id}}/close"> 👨‍⚖️ Close Auction </a>
+                </div>
+                <br>
+                {% endif %}
+        {% endif %}
+
+
+        <div class="commentarySection">
+            <div id="commentarySectionTitle">Commentary Section</div>
+        {% if commentary_section %}
+            {% for comment in commentary_section %}
+                <div class="commentary">
+                    <div class="commentTitle">
+                        <span id="commentTitle">{{ comment.comment }}</span>
+                    </div>
+                    <div class="commenter">
+                        <span id="commenter">{{ comment.commenter }} </span>
+                        <span id="date">{{ comment.comment_date }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    
+        
+
+        {% if user.is_authenticated and not is_closed%}
+        <div class="commentForm">
+            <form id="commentForm" method="post" action="/listing/{{id}}/comment">
+                {% csrf_token %}
+                    <div class="commentContainer">
+                        <textarea id="comment" name="comment" autocomplete="off" placeholder="Make your comment here"></textarea>
+                        <br>
+                        <input id="postCommentButton" type="submit" value="Post comment">
+                    </div>
+            </form>
+        </div>
         {% endif %}
 
     {% endif %}

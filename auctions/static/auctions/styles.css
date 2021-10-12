@@ -2,8 +2,9 @@ body {
     padding: 10px;
 }
 
+/** Create new list **/
 
-.listing_form input, label, select {
+.listing_form input, label, select, textarea {
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -17,6 +18,12 @@ body {
     margin-bottom: 15px;
 }
 
+#id_description {
+    text-align: left;
+}
+
+/** Index styling **/
+
 .listings {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -26,18 +33,40 @@ body {
 }
 
 .listing {
+    background-color: #f7f7f7;
     justify-self: center;
     align-self: center;
+    border: 1px solid #ccc;
+    margin-bottom: 25px;
 }
 
 .listing-title {
     text-align: center;
 }
 
+#listingCondition {
+    display:table;
+    margin:0 auto;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.listingPrice {
+    display: table;
+    margin:0 auto;
+}
+
+#listingPrice {
+    margin:0 auto;
+    font-size: 15px;
+    font-weight: bold;
+}
+
 .img-container {
     width: 200px;
     height: auto;
-    
+    justify-self: center;
+    align-self: center;
 }
 
 .img-cover {
@@ -48,14 +77,12 @@ body {
     border: 1px solid;
     border-color: rgb(207, 207, 207);
     padding: 2px;
-    
+
+    display:block;
+    margin:auto;
 }
 
-/**
-.listing-img-container {
-     
-}
-**/
+/** Listing page styling **/
 
 .listing_img {
     border: 1px solid;
@@ -80,9 +107,22 @@ body {
 }
 
 #list-price, #location, #category {
-    font-size: 13px;
+    font-size: 14px;
 }
 
+#itemDescription {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+#descriptionText {
+    font-size: 16px;
+}
+
+#listingOwner {
+    font-size: 13px;
+    font-weight: 600;
+}
 
 /** Watchlist styling **/
 
@@ -130,5 +170,52 @@ body {
     padding: 4px;
     border-radius: 8px;
     background-color: brown;
+    color: white;
+}
+
+/** Comment area styling **/
+
+#commentarySectionTitle {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.commentary {
+    margin: 5px 0px;
+    border-bottom: 1px solid;
+    border-color: rgb(194, 194, 194);
+}
+
+#commentary {
+    font-size: 16px;
+}
+
+#commenter {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#date {
+    font-size: 11px;
+}
+
+
+/** Post comment area **/
+
+.commentContainer {
+    margin-top: 5px;
+}
+
+#comment {
+    margin: 0;
+    width: 300px;
+    height: 70px;
+}
+
+#postCommentButton {
+    border: 1px solid;
+    padding: 4px;
+    border-radius: 8px;
+    background-color: darkblue;
     color: white;
 }

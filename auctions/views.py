@@ -129,6 +129,7 @@ def listing(request, id):
     # Check if user already has added item to watchlist
     listing = Listing.objects.filter(listing_id=id)
     is_watched = Watchlist.objects.filter(listing_id=id, watcher_id=request.user.id)
+    is_closed = listing[0].is_closed
 
     # Prepare close option to render
     owner = listing[0].owner
@@ -144,12 +145,29 @@ def listing(request, id):
     else:
         is_watched = False
 
+    # Check if logged user is the winner of auction
+    winner = listing[0].winner
+    if user == winner:
+        is_winner = True
+        messages.success(request, 'You won this auction.')
+    else:
+        is_winner = False
+        if is_closed:
+            messages.warning(request, 'This auction is already closed.')
+
+    # Prepare commentary section to be shown
+
+    commentary_section = Comment.objects.filter(listing_id=id)
+    print(commentary_section)
 
     return render(request, "auctions/listing.html",{
         'listing': listing,
         'id': id,
         'is_watched': is_watched,
-        'can_close': can_close
+        'can_close': can_close,
+        'is_closed': is_closed,
+        'is_winner': is_winner,
+        'commentary_section': commentary_section
     })
 
 
@@ -226,6 +244,7 @@ def bid(request, id):
                 
                 # Update bid on listing
                 update_price = Listing.objects.get(listing_id=id)
+                update_price.highest_bidder = request.user
                 update_price.current_price = bid
                 update_price.save()
 
@@ -244,19 +263,49 @@ def bid(request, id):
 @login_required
 def close(request, id):
 
-    #winner = Bid.objects.get(id=id)
-
-    #print(winner)
-
     # Get listing info to close auction
     close_auction = Listing.objects.get(listing_id=id)
+
+    # Close auction
     close_auction.is_closed = True
-    status = close_auction.is_closed
 
+    # Make the highest bidder as winner of the auction
+    close_auction.winner = close_auction.highest_bidder
 
-    #close_auction.save()
-
-    #close_auction = close_auction.winner
+    # Save data
+    close_auction.save()
 
     messages.warning(request, 'Auction closed')
     return HttpResponseRedirect(f"/listing/{id}")
+
+@login_required
+def comment(request, id):
+
+    if request.method == 'POST':
+
+        commentary = request.POST.get('comment')
+
+        # Get listing info to relate to auction
+        listing = Listing.objects.get(listing_id=id)
+        user = request.user
+
+        # Prepare comment to be submitted
+        make_comment = Comment(listing_id=listing, commenter=user, comment=commentary)
+
+        # Submit comment
+        make_comment.save()
+
+        return HttpResponseRedirect(f"/listing/{id}")
+
+    return HttpResponseRedirect(f"/listing/{id}")
+
+@login_required
+def watchlist(request):
+
+    user_id = request.user.id
+
+    listings = Listing.objects.filter(watchlist__watcher=user_id)
+
+    return render(request, "auctions/watchlist.html", {
+        'listings': listings
+        })

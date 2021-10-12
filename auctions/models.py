@@ -58,19 +58,20 @@ class Listing(models.Model):
         choices=CONDITION_CHOICES,
         default=BRAND_NEW
     )
-    description = models.CharField(max_length=1024, blank=True, null=True)
+    description = models.TextField(max_length=1024, blank=True, null=True)
     image_url = models.CharField(max_length=256, blank=False, null=False)
     category = models.CharField(
         max_length=32,
         choices=CATEGORY_CHOICES,
         default=HG
     )
-    zip_code = models.IntegerField(default="00000")
+    zip_code = models.IntegerField(default="")
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
     #User.objects.get(id=id)
     creation_date = models.DateTimeField(default=now, editable=False)
     is_closed = models.BooleanField(default=False)
-    winner_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="winner", null=True, blank=True)
+    highest_bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="highest_bidder", null=True, blank=True)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="winner", null=True, blank=True)
 
     def __str__(self):
         return f"{self.title} {self.current_price} by {self.owner}"
@@ -89,12 +90,13 @@ class Bid(models.Model):
 # Comment model
 class Comment(models.Model):
     comment_id = models.AutoField(primary_key=True)
-    commenter_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
-    comment = models.CharField(max_length=128)
+    commenter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="commenter")
+    comment = models.TextField(max_length=256)
     listing_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listed_commentary")
+    comment_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.comment} by {self.commenter_id} on {self.listing_id}"
+        return f"{self.comment} by {self.commenter_id} on {self.listing_id} at {self.comment_date}"
 
 # Watchtlist model
 
@@ -103,23 +105,6 @@ class Watchlist(models.Model):
     watcher = models.ForeignKey(User, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
 
-'''
-# Image model. A single image will be saved at time.
-class Images(models.Model):
-    image_id = models.AutoField(primary_key=True)
-    product_id = models.ForeignKey(Listing, on_delete=models.CASCADE, related_name="listed_image")
-    image = models.ImageField(upload_to="images/", blank=True)
-
-    def __str__(self):
-        return f"{self.image_id}"
-
-
-# Form for image
-class ImagesForm(ModelForm):
-    class Meta:
-        model = Images
-        fields = ['image']
-'''
 
 # Form for listing
 class ListingForm(ModelForm):
