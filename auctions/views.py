@@ -309,3 +309,14 @@ def watchlist(request):
     return render(request, "auctions/watchlist.html", {
         'listings': listings
         })
+
+def categories(request):
+
+    category_options = Listing._meta.filter_fields()
+
+    print(category_options)
+
+
+
+    return render(request, "auctions/categories.html")
+    #return render(request, reverse("categories"))
