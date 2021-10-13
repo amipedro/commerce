@@ -1,5 +1,13 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
     <h2>Categories</h2>
+
+    {% for category in category_options %}
+    <ul>
+        <a href="/category/{{ category.abv}}"><li>{{category.name}}</li></a>
+    </ul>
+    {% endfor %}
+
 {% endblock %}

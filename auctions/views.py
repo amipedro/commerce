@@ -312,10 +312,10 @@ def watchlist(request):
 
 def categories(request):
 
-    category_options = Listing._meta.get_field('category')
-    print(type(category_options))
+    category_options = [{"abv":"BO", "name":"Books"}, {"abv":"BI", "name":"Business & Industrial"}, {"abv":"CA", "name":"Clothing, Shoes & Accessories"}, {"abv":"CO","name":"Collectibles"}, {"abv":"CE","name":"Consumer Electronics"}, 
+    {"abv":"CR","name":"Crafts"}, {"abv":"DB","name":"Dolls & Bears"}, {"abv":"HG","name":"Home & Garden"}, {"abv":"MO","name":"Motors"}, {"abv":"PS","name":"Pet Supplies"}, {"abv":"SG","name":"Sporting Goods"}, 
+    {"abv":"SM","name":"Sports Mem, Cards & Fan Shop"}, {"abv":"TH","name":"Toys & Hobbies"}, {"abv":"AT","name":"Antiques"}, {"abv":"CN","name":"Computers/Tablets & Networking"}]
 
-
-
-    return render(request, "auctions/categories.html")
-    #return render(request, reverse("categories"))
+    return render(request, "auctions/categories.html",{
+        'category_options':category_options
+    })
