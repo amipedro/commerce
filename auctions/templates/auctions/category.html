@@ -1,0 +1,32 @@
+{% extends "auctions/layout.html"%}
+
+{% block body %}
+
+<h2>{{cat_name}}</h2>
+
+{% if listings %}
+    <div class="listings">
+    {% for listing in listings %}
+        <div class="listing">
+        <a href="/listing/{{listing.listing_id}}"><h6 class="listing-title">{{ listing.title }}</h6></a>
+        <br> 
+        <div class="img-container">
+            <a href="/listing/{{listing.listing_id}}"><img class="img-cover" src="{{ listing.image_url}}" alt={{ listing.title}}></a>
+        </div>
+        <br>
+        <div class="listingCondition">
+            <span id="listingCondition">{{ listing.condition }}</span>
+        </div>
+        <div class="listingPrice">
+            <span id="currentPriceText">Current price: </span>
+            <span id="listingPrice">$ {{ listing.current_price }}</span>
+        </div>
+        <br>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <h4>No listings available in this category</h4>
+{% endif %}
+
+{% endblock %}
