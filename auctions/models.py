@@ -111,3 +111,12 @@ class ListingForm(ModelForm):
     class Meta:
         model = Listing
         fields = ['title', 'starting_price', 'condition', 'description', 'image_url', 'category', 'zip_code']
+
+
+# Categories model
+class Category(models.Model):
+    category_id = models.AutoField(primary_key=True)
+    category = models.CharField(max_length=32, blank=True)
+    
+    def __str__(self):
+        return f"{self.category}"

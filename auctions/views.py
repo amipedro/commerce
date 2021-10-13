@@ -312,9 +312,8 @@ def watchlist(request):
 
 def categories(request):
 
-    category_options = Listing._meta.filter_fields()
-
-    print(category_options)
+    category_options = Listing._meta.get_field('category')
+    print(type(category_options))
 
 
 
