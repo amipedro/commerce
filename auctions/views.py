@@ -319,3 +319,27 @@ def categories(request):
     return render(request, "auctions/categories.html",{
         'category_options':category_options
     })
+
+def category(request, code):
+
+    category_options = [{"abv":"BO", "name":"Books"}, {"abv":"BI", "name":"Business & Industrial"}, {"abv":"CA", "name":"Clothing, Shoes & Accessories"}, {"abv":"CO","name":"Collectibles"}, {"abv":"CE","name":"Consumer Electronics"}, 
+    {"abv":"CR","name":"Crafts"}, {"abv":"DB","name":"Dolls & Bears"}, {"abv":"HG","name":"Home & Garden"}, {"abv":"MO","name":"Motors"}, {"abv":"PS","name":"Pet Supplies"}, {"abv":"SG","name":"Sporting Goods"}, 
+    {"abv":"SM","name":"Sports Mem, Cards & Fan Shop"}, {"abv":"TH","name":"Toys & Hobbies"}, {"abv":"AT","name":"Antiques"}, {"abv":"CN","name":"Computers/Tablets & Networking"}]
+
+    for cat in category_options:
+        if code == cat['abv']:
+            listings = Listing.objects.filter(is_closed=0, category=cat['name'])
+            cat_found = True
+            cat_name = cat['name']
+            break
+        else:
+            cat_found = False
+            listings = []
+            cat_name = "Category does not exist"
+    
+
+    return render(request, "auctions/category.html",{
+        'listings':listings,
+        'cat_found':cat_found,
+        'cat_name': cat_name
+    })

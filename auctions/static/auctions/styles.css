@@ -1,5 +1,6 @@
 body {
     padding: 10px;
+    background-color: beige;
 }
 
 /** Create new list **/
@@ -30,6 +31,7 @@ body {
     justify-items: center;
     justify-content: space-evenly;
     align-items: space-evenly;
+    margin-top: 20px;
 }
 
 .listing {
@@ -37,6 +39,7 @@ body {
     justify-self: center;
     align-self: center;
     border: 1px solid #ccc;
+    border-radius: 10px;
     margin-bottom: 25px;
 }
 
