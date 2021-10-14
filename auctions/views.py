@@ -107,11 +107,12 @@ def list(request):
                     new_listing.owner = request.user
 
                     new_listing.save()
+                    messages.success(request, 'Successfully listed.')
+
                     return HttpResponseRedirect(reverse('list'))
             
                 else:
                     messages.error(request, 'Image url in wrong format. Try adding a link ending in .jpeg, .jpg, .png or .bmp', extra_tags='danger')
-                    print("Image url in wrong format")
 
                     return render(request, "auctions/list.html", {
                         "listing_form": ListingForm(),
@@ -158,7 +159,6 @@ def listing(request, id):
     # Prepare commentary section to be shown
 
     commentary_section = Comment.objects.filter(listing_id=id)
-    print(commentary_section)
 
     return render(request, "auctions/listing.html",{
         'listing': listing,
@@ -229,7 +229,6 @@ def bid(request, id):
             # Get current price to be used as highest bid parameter
             current_price = Listing.objects.filter(pk=id).values()
             current_price = current_price[0]['current_price']
-            print(current_price)
 
             # Check if it's possible to bid on listing
             if float(bid) >= (float(current_price) + 1):
